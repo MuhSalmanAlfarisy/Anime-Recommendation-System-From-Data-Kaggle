@@ -63,7 +63,7 @@ Variabel utama yang digunakan dari **Dataset Rating** (setelah _preprocessing_ d
 
 * **Distribusi Genre Anime:**
     Analisis menunjukkan 44 genre unik. Genre seperti "Comedy", "Action", dan "Fantasy" mendominasi, sementara genre seperti "Yuri" memiliki representasi paling sedikit
-<br>
+  
     ![Distribusi Sebaran Genre Anime](https://github.com/user-attachments/assets/e8ba2784-7513-4ec1-8b00-e42031e67168)
 
 * **Distribusi Rating Anime Terpopuler:**
