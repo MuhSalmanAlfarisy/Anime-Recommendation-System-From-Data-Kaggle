@@ -243,11 +243,13 @@ Pendekatan ini merekomendasikan anime dengan memanfaatkan pola rating dari banya
 
 * **Content-Based (untuk anime "Bleach"):**
     Model berhasil merekomendasikan anime-anime yang sangat mirip genrenya, mayoritas merupakan bagian dari waralaba Bleach itu sendiri atau anime dengan genre serupa seperti Shaman King.
-    !([Bleach](https://github.com/user-attachments/assets/3d3aa3f9-d6f1-4d51-ad72-05498c411c35)
- Contoh Output:
-    1.  Bleach: The Sealed Sword Frenzy (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
-    2.  Bleach: Sennen Kessen-hen (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
-    3.  Shaman King (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+
+    ![Bleach](https://github.com/user-attachments/assets/3d3aa3f9-d6f1-4d51-ad72-05498c411c35)
+
+    Contoh Output:
+    1. Bleach: The Sealed Sword Frenzy (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+    2. Bleach: Sennen Kessen-hen (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+    3. Shaman King (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
 
 * **Collaborative Filtering (untuk User ID acak: 226500):**
     Model memberikan rekomendasi yang tampak relevan dengan anime yang pernah ditonton dan diberi rating tinggi oleh pengguna tersebut (Inazuma Eleven: Sports, Super Power, Shounen). Rekomendasi mencakup genre seperti Sports, Shounen, Comedy, dan Drama, serta memperluas ke Sci-Fi dan Slice of Life.
