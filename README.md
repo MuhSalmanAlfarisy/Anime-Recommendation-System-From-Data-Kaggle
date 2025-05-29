@@ -243,7 +243,7 @@ Pendekatan ini merekomendasikan anime dengan memanfaatkan pola rating dari banya
 
 * **Content-Based (untuk anime "Bleach"):**
     Model berhasil merekomendasikan anime-anime yang sangat mirip genrenya, mayoritas merupakan bagian dari waralaba Bleach itu sendiri atau anime dengan genre serupa seperti Shaman King.
-    ![Top 10 Rekomendasi Anime Mirip Bleach]([https://user-images.githubusercontent.com/your-username/your-repo/blob/main/path-to-bleach-recommendation-image.png](https://github.com/user-attachments/assets/3d3aa3f9-d6f1-4d51-ad72-05498c411c35)) Contoh Output:
+    !([Bleach](https://github.com/user-attachments/assets/3d3aa3f9-d6f1-4d51-ad72-05498c411c35)) Contoh Output:
     1.  Bleach: The Sealed Sword Frenzy (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
     2.  Bleach: Sennen Kessen-hen (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
     3.  Shaman King (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
