@@ -36,7 +36,7 @@ Bagian ini menjelaskan proses klarifikasi masalah yang ingin diselesaikan oleh p
 
 ---
 
-## 📊 Data Understanding
+##  Data Understanding
 
 Proyek ini menggunakan dua dataset utama yang diperoleh dari Kaggle:
 
@@ -51,7 +51,6 @@ Proyek ini menggunakan dua dataset utama yang diperoleh dari Kaggle:
    - Memiliki total 7 fitur.
    - Setelah dilakukan pembersihan dan penggabungan, diperoleh 130.488 interaksi unik yang digunakan untuk pelatihan model _collaborative filtering_.
 
----
 
 ### 📑 Deskripsi Fitur Dataset
 
