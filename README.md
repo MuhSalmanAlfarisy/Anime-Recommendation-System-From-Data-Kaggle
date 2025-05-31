@@ -36,10 +36,6 @@ Bagian ini menjelaskan proses klarifikasi masalah yang ingin diselesaikan oleh p
 
 ---
 
-Berikut revisi dan perbaikan bagian **Data Understanding** kamu agar **lengkap sesuai permintaan reviewer**, tetap **terstruktur**, dan **berorientasi laporan ilmiah** (langsung bisa kamu salin ke laporan / notebook markdown):
-
----
-
 ## 📊 Data Understanding
 
 Proyek ini menggunakan dua dataset utama yang diperoleh dari Kaggle:
