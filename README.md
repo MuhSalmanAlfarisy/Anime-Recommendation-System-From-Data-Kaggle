@@ -36,7 +36,7 @@ Bagian ini menjelaskan proses klarifikasi masalah yang ingin diselesaikan oleh p
 
 ---
 
-##  Data Understanding
+## Data Understanding
 
 Proyek ini menggunakan dua dataset utama yang diperoleh dari Kaggle:
 
@@ -49,7 +49,6 @@ Proyek ini menggunakan dua dataset utama yang diperoleh dari Kaggle:
 
    - Berisi 192.112 ulasan dan rating pengguna terhadap anime.
    - Memiliki total 7 fitur.
-   - Setelah dilakukan pembersihan dan penggabungan, diperoleh 130.488 interaksi unik yang digunakan untuk pelatihan model _collaborative filtering_.
 
 ### 📑 Deskripsi Fitur Dataset
 
@@ -100,14 +99,29 @@ Proyek ini menggunakan dua dataset utama yang diperoleh dari Kaggle:
 
 ### 🔍 Kondisi Data dan Kualitas
 
-#### Missing Values dan Data Duplikat
-- **Dataset Anime:** Tidak ditemukan missing values yang signifikan pada kolom-kolom utama yang digunakan (MAL_ID, Name, Genres).
-- **Dataset Reviews:** Tidak ditemukan missing values pada kolom score dan anime_uid yang merupakan kolom kunci.
-- **Data Duplikat:** Setelah penggabungan dataset, ditemukan 61.584 duplikat rating dari pengguna yang sama untuk anime yang sama. Duplikat ini kemudian dihapus untuk memastikan setiap interaksi pengguna-anime adalah unik.
+#### Kondisi Data Awal
+
+**Dataset Anime (`anime.csv`):**
+- **Missing Values:** Tidak ditemukan missing values yang signifikan pada kolom-kolom utama yang digunakan (MAL_ID, Name, Genres).
+- **Data Duplikat:** Tidak ditemukan duplikasi pada dataset anime berdasarkan MAL_ID.
+- **Outlier/Anomali:** Rentang data pada kolom numerik seperti Score, Members, dan Favorites dalam batas wajar.
+
+**Dataset Reviews (`reviews.csv`):**
+- **Missing Values:** Tidak ditemukan missing values pada kolom kunci yang digunakan (score, anime_uid, profile).
+- **Data Duplikat:** Belum dilakukan pengecekan duplikasi pada tahap ini.
+- **Rentang Data:** Kolom score memiliki rentang 0.0 hingga 11.0 yang perlu dinormalisasi.
+
+#### Kondisi Data Setelah Penggabungan
+
+Setelah penggabungan dataset anime dan reviews berdasarkan ID anime:
+- **Dataset Gabungan (`rating_anime`):** Memiliki 192.112 baris awal
+- **Missing Values:** Tidak ditemukan missing values pada data gabungan
+- **Data Duplikat:** Ditemukan 61.584 duplikat rating dari pengguna yang sama untuk anime yang sama, sehingga tersisa 130.488 interaksi unik setelah pembersihan
+- **Kondisi Akhir:** Dataset gabungan bersih dengan 130.488 interaksi unik siap untuk pemodelan
 
 ### 🔍 Fitur yang Digunakan untuk Pemodelan
 
-Setelah proses _preprocessing_, fitur utama berikut dipilih untuk masing-masing pendekatan:
+Setelah analisis data, fitur utama berikut dipilih untuk masing-masing pendekatan:
 
 #### Untuk **Content-Based Filtering** (dari `anime.csv`):
 
@@ -144,12 +158,12 @@ Setelah proses _preprocessing_, fitur utama berikut dipilih untuk masing-masing 
 
 | Informasi                          | Nilai      |
 | ---------------------------------- | ---------- |
-| Total interaksi unik               | 130.488    |
+| Total interaksi awal               | 192.112    |
+| Total interaksi setelah penggabungan dan pembersihan duplikat | 130.488    |
 | Jumlah pengguna unik               | 130.488    |
 | Jumlah anime unik                  | 8.107      |
 | Rentang rating awal                | 0.0 – 11.0 |
 | Rentang rating setelah normalisasi | 0.0 – 1.0  |
-
 ---
 
 ## Data Preparation
@@ -202,20 +216,26 @@ Tahapan persiapan data yang dilakukan meliputi:
     - Alasan: Langkah-langkah ini penting untuk memastikan konsistensi, kualitas, dan integritas data sebelum dimasukkan ke model.
     - Hasil: Dataset gabungan `rating_anime` dengan 130.488 interaksi unik berhasil dibuat.
 
-8.  **ID Encoding (untuk _Collaborative Filtering_):**
+8.  **Column Removal:**
+
+    - Menghapus kolom `Rating` dari dataframe gabungan `rating_anime` menggunakan `rating_anime.drop(columns=['Rating'])`.
+    - Alasan: Kolom `Rating` (batasan usia) tidak diperlukan untuk model collaborative filtering yang hanya membutuhkan interaksi user-item.
+    - Hasil: Kolom `Rating` berhasil dihapus dari dataset.
+
+9.  **Data Type Conversion:**
+
+    - Mengubah tipe data kolom `rating` menjadi `float32` menggunakan `rating_anime['rating'].astype(np.float32)`.
+    - Alasan: `float32` memberikan presisi yang cukup untuk rating sambil menghemat penggunaan memori dibandingkan `float64`.
+    - Hasil: Kolom `rating` berhasil dikonversi ke tipe data `float32`.
+
+10. **ID Encoding (untuk _Collaborative Filtering_):**
 
     - Mengubah `user_id` dan `anime_id` menjadi _sequential integers_ (0 hingga N-1).
     - Membuat mapping dictionary untuk encoding: `user2user_encoded` dan `anime2anime_encoded`.
     - Alasan: Model _neural network_ (khususnya _embedding layers_) memerlukan input berupa integer sekuensial.
     - Hasil: `user_id` dan `anime_id` berhasil di-_encode_ dengan total 130.488 pengguna unik dan 8.107 anime unik.
 
-9.  **Data Type Conversion:**
-
-    - Mengubah tipe data kolom `rating` menjadi `float32` untuk optimalisasi memori dan komputasi.
-    - Alasan: `float32` memberikan presisi yang cukup untuk rating sambil menghemat penggunaan memori dibandingkan `float64`.
-    - Hasil: Kolom `rating` berhasil dikonversi ke tipe data `float32`.
-
-10. **Rating Normalization (untuk _Collaborative Filtering_):**
+11. **Rating Normalization (untuk _Collaborative Filtering_):**
 
     - Menganalisis distribusi rating (ditemukan rentang 0.0 - 11.0).
     - Menormalisasi nilai `rating` ke rentang [0, 1] menggunakan min-max scaling.
@@ -223,7 +243,7 @@ Tahapan persiapan data yang dilakukan meliputi:
     - Rumus: `rating_normalized = (rating - min_rating) / (max_rating - min_rating)`
     - Hasil: Kolom `rating_normalized` berhasil dibuat dengan rentang 0.0-1.0.
 
-11. **Train-Test Split (untuk _Collaborative Filtering_):**
+12. **Train-Test Split (untuk _Collaborative Filtering_):**
     - Mengacak urutan data.
     - Memisahkan fitur (`user`, `anime`) dan target (`rating_normalized`).
     - Membagi data menjadi data latih (80%) dan data validasi (20%).
