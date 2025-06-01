@@ -341,12 +341,20 @@ Pendekatan ini merekomendasikan anime dengan memanfaatkan pola rating dari banya
 
   ![Bleach](https://github.com/user-attachments/assets/3d3aa3f9-d6f1-4d51-ad72-05498c411c35)
 
-  Contoh Output:
+###  **Output**
 
-  1. Bleach: The Sealed Sword Frenzy (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
-  2. Bleach: Sennen Kessen-hen (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
-  3. Shaman King (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+1. **Bleach: The Sealed Sword Frenzy** (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+2. **Bleach: Sennen Kessen-hen** (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+3. **Bleach Movie 1: Memories of Nobody** (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+4. **Bleach Movie 4: Jigoku-hen** (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+5. **Bleach Movie 2: The DiamondDust Rebellion** (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+6. **Shaman King** (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+7. **Bleach Movie 3: Fade to Black** (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+8. **Shaman King (2021)** (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
+9. **Zettai Karen Children: The Unlimited - Hyoubu Kyousuke** (Action, Super Power, Supernatural, Shounen)
+10. **Toriko: Barbarian Ivy wo Hokaku Seyo!** (Action, Super Power, Adventure, Comedy, Shounen)
 
+---
 - **Collaborative Filtering (untuk User ID: 226500):**
   Model memberikan rekomendasi yang tampak relevan dengan anime yang pernah ditonton dan diberi rating tinggi oleh pengguna tersebut (Inazuma Eleven: Sports, Super Power, Shounen). Rekomendasi mencakup genre seperti Sports, Shounen, Comedy, dan Drama, serta memperluas ke Sci-Fi dan Slice of Life.
   
