@@ -51,7 +51,6 @@ Proyek ini menggunakan dua dataset utama yang diperoleh dari Kaggle:
    - Memiliki total 7 fitur.
    - Setelah dilakukan pembersihan dan penggabungan, diperoleh 130.488 interaksi unik yang digunakan untuk pelatihan model _collaborative filtering_.
 
-
 ### 📑 Deskripsi Fitur Dataset
 
 #### 🔹 Dataset `anime.csv` (35 fitur)
@@ -99,7 +98,12 @@ Proyek ini menggunakan dua dataset utama yang diperoleh dari Kaggle:
 | `scores`    | Dictionary berisi skor per aspek: Overall, Story, Animation, Sound, Character, Enjoyment |
 | `link`      | Tautan ke halaman review di MyAnimeList                                                  |
 
----
+### 🔍 Kondisi Data dan Kualitas
+
+#### Missing Values dan Data Duplikat
+- **Dataset Anime:** Tidak ditemukan missing values yang signifikan pada kolom-kolom utama yang digunakan (MAL_ID, Name, Genres).
+- **Dataset Reviews:** Tidak ditemukan missing values pada kolom score dan anime_uid yang merupakan kolom kunci.
+- **Data Duplikat:** Setelah penggabungan dataset, ditemukan 61.584 duplikat rating dari pengguna yang sama untuk anime yang sama. Duplikat ini kemudian dihapus untuk memastikan setiap interaksi pengguna-anime adalah unik.
 
 ### 🔍 Fitur yang Digunakan untuk Pemodelan
 
@@ -118,8 +122,6 @@ Setelah proses _preprocessing_, fitur utama berikut dipilih untuk masing-masing 
 - `user_id` (dari `uid`)
 - `anime_id` (dari `anime_uid`)
 - `rating` (dari `score`, dinormalisasi ke rentang 0.0–1.0)
-
----
 
 ### 📈 Visualisasi dan EDA
 
@@ -203,18 +205,25 @@ Tahapan persiapan data yang dilakukan meliputi:
 8.  **ID Encoding (untuk _Collaborative Filtering_):**
 
     - Mengubah `user_id` dan `anime_id` menjadi _sequential integers_ (0 hingga N-1).
+    - Membuat mapping dictionary untuk encoding: `user2user_encoded` dan `anime2anime_encoded`.
     - Alasan: Model _neural network_ (khususnya _embedding layers_) memerlukan input berupa integer sekuensial.
-    - Hasil: `user_id` dan `anime_id` berhasil di-_encode_.
+    - Hasil: `user_id` dan `anime_id` berhasil di-_encode_ dengan total 130.488 pengguna unik dan 8.107 anime unik.
 
-9.  **Rating Normalization (untuk _Collaborative Filtering_):**
+9.  **Data Type Conversion:**
+
+    - Mengubah tipe data kolom `rating` menjadi `float32` untuk optimalisasi memori dan komputasi.
+    - Alasan: `float32` memberikan presisi yang cukup untuk rating sambil menghemat penggunaan memori dibandingkan `float64`.
+    - Hasil: Kolom `rating` berhasil dikonversi ke tipe data `float32`.
+
+10. **Rating Normalization (untuk _Collaborative Filtering_):**
 
     - Menganalisis distribusi rating (ditemukan rentang 0.0 - 11.0).
-    - Menormalisasi nilai `rating` ke rentang [0, 1].
+    - Menormalisasi nilai `rating` ke rentang [0, 1] menggunakan min-max scaling.
     - Alasan: Normalisasi membantu dalam stabilitas proses _training_ model _neural network_ dan konsistensi _output_ dari fungsi aktivasi sigmoid.
-    - Rumus: `y_normalized = (y - min_rating) / (max_rating - min_rating)`
-    - Hasil: Rating berhasil dinormalisasi.
+    - Rumus: `rating_normalized = (rating - min_rating) / (max_rating - min_rating)`
+    - Hasil: Kolom `rating_normalized` berhasil dibuat dengan rentang 0.0-1.0.
 
-10. **Train-Test Split (untuk _Collaborative Filtering_):**
+11. **Train-Test Split (untuk _Collaborative Filtering_):**
     - Mengacak urutan data.
     - Memisahkan fitur (`user`, `anime`) dan target (`rating_normalized`).
     - Membagi data menjadi data latih (80%) dan data validasi (20%).
@@ -338,12 +347,28 @@ Pendekatan ini merekomendasikan anime dengan memanfaatkan pola rating dari banya
   2. Bleach: Sennen Kessen-hen (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
   3. Shaman King (Action, Adventure, Comedy, Super Power, Supernatural, Shounen)
 
-- **Collaborative Filtering (untuk User ID acak: 226500):**
+- **Collaborative Filtering (untuk User ID: 226500):**
   Model memberikan rekomendasi yang tampak relevan dengan anime yang pernah ditonton dan diberi rating tinggi oleh pengguna tersebut (Inazuma Eleven: Sports, Super Power, Shounen). Rekomendasi mencakup genre seperti Sports, Shounen, Comedy, dan Drama, serta memperluas ke Sci-Fi dan Slice of Life.
-  Contoh Output:
-  1.  Hajime no Ippo (Comedy, Sports, Drama, Shounen)
-  2.  Gintama (Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen)
-  3.  Clannad: After Story (Slice of Life, Comedy, Supernatural, Drama, Romance)
+  
+  **Anime dengan Rating Tinggi dari User:**
+  - Inazuma Eleven (Sports, Super Power, Shounen)
+  
+  **Top 15 Rekomendasi:**
+  1. Hajime no Ippo (Comedy, Sports, Drama, Shounen)
+  2. Gintama (Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen)
+  3. Clannad: After Story (Slice of Life, Comedy, Supernatural, Drama, Romance)
+  4. Fullmetal Alchemist: Brotherhood (Action, Military, Adventure, Comedy, Drama, Magic, Fantasy, Shounen)
+  5. Suzumiya Haruhi no Shoushitsu (Comedy, Mystery, Romance, School, Sci-Fi, Supernatural)
+  6. Steins;Gate (Thriller, Sci-Fi)
+  7. Uchuu Kyoudai (Comedy, Sci-Fi, Seinen, Slice of Life, Space)
+  8. Gintama Movie 2: Kanketsu-hen - Yorozuya yo Eien Nare (Action, Sci-Fi, Comedy, Historical, Parody, Samurai, Shounen)
+  9. Haikyuu!! (Comedy, Sports, Drama, School, Shounen)
+  10. Gintama° (Action, Comedy, Historical, Parody, Samurai, Sci-Fi, Shounen)
+  11. Ansatsu Kyoushitsu 2nd Season (Action, Comedy, School, Shounen)
+  12. Kuroko no Basket: Saikou no Present Desu (Action, Sports, School, Shounen)
+  13. Natsume Yuujinchou Roku (Slice of Life, Demons, Supernatural, Drama, Shoujo)
+  14. 3-gatsu no Lion 2nd Season (Drama, Game, Seinen, Slice of Life)
+  15. Owarimonogatari 2nd Season (Mystery, Comedy, Supernatural, Vampire)
 
 ---
 
